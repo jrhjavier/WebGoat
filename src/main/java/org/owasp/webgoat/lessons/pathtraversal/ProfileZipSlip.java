@@ -70,13 +70,13 @@ public class ProfileZipSlip extends ProfileUploadBase {
       Enumeration<? extends ZipEntry> entries = zip.entries();
       while (entries.hasMoreElements()) {
         ZipEntry e = entries.nextElement();
-        File file = new File(tmpZipDirectory.toFile(), e.getName());
-        InputStream inputStream = zip.getInputStream(e);
+        File f = new File(tmpZipDirectory.toFile(), e.getName());
+        InputStream is = zip.getInputStream(e);
         
-        String canonicalDestinationPath = file.getCanonicalPath();
+        String canonicalDestinationPath = f.getCanonicalPath();
 
         if (canonicalDestinationPath.startsWith(targetDirectory)) {
-            Files.copy(inputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING, LinkOption.NOFOLLOW_LINKS);
+            Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING, LinkOption.NOFOLLOW_LINKS);
         }
       }
 
