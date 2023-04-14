@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -72,7 +73,12 @@ public class ProfileZipSlip extends ProfileUploadBase {
         ZipEntry e = entries.nextElement();
         File f = new File(tmpZipDirectory.toFile(), e.getName());
         InputStream is = zip.getInputStream(e);
-        Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        
+        String canonicalDestinationPath = f.getCanonicalPath();
+
+        if (canonicalDestinationPath.startsWith(tmpZipDirectory.toString())) {
+            Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING, LinkOption.NOFOLLOW_LINKS);
+        }
       }
 
       return isSolved(currentImage, getProfilePictureAsBase64());
