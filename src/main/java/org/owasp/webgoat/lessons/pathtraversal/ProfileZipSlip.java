@@ -75,7 +75,7 @@ public class ProfileZipSlip extends ProfileUploadBase {
         
         String canonicalDestinationPath = f.getCanonicalPath();
 
-        if (canonicalDestinationPath.startsWith(targetDirectory)) {
+        if (canonicalDestinationPath.startsWith(tmpZipDirectory)) {
             Files.copy(is, f.toPath(), StandardCopyOption.REPLACE_EXISTING, LinkOption.NOFOLLOW_LINKS);
         }
       }
